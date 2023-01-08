@@ -1,4 +1,12 @@
 {
   "extends": ["eslint:recommended", "next/core-web-vitals"],
-  "rules": { "react/no-unescaped-entities": 0 }
+  "rules": { "react/no-unescaped-entities": 0 },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ]
 }

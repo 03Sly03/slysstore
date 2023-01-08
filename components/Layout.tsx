@@ -1,10 +1,9 @@
-import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 
 type Props = {
   title: string;
-  children: string;
+  children: JSX.Element | JSX.Element[];
 };
 
 function Layout({ title, children }: Props) {
@@ -25,10 +24,10 @@ function Layout({ title, children }: Props) {
             </Link>
             <div>
               <Link href="/cart" className="p-2">
-                Cart
+                Panier
               </Link>
               <Link href="/login" className="p-2">
-                Login
+                Se connecter
               </Link>
             </div>
           </nav>
