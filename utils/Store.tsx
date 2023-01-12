@@ -1,5 +1,16 @@
 import { createContext, Dispatch, PropsWithChildren, useReducer } from 'react';
 import { ProductData } from '../src/types/datas';
+import Cookies from 'js-cookie';
+
+// sans les cookies
+/*
+export interface AppContextInterface {
+  cart: {
+    cartItems: ProductQuantity[];
+  };
+}*/
+
+const cookies = Cookies.get('cart');
 
 export interface AppContextInterface {
   cart: {
@@ -35,10 +46,18 @@ export function StoreProvider(props: PropsWithChildren<{}>) {
   return <Store.Provider value={value}>{props.children}</Store.Provider>;
 }
 
+// sans les cookies
+/*
 const initialState: AppContextInterface = {
   cart: {
     cartItems: [],
   },
+};
+*/
+
+// avec les cookies
+const initialState: AppContextInterface = {
+  cart: cookies ? JSON.parse(cookies) : { cartItems: [] },
 };
 
 function reducer(state: typeof initialState, action: ACTIONTYPE) {
@@ -53,12 +72,14 @@ function reducer(state: typeof initialState, action: ACTIONTYPE) {
             item.name === existItem.name ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
+      Cookies.set('cart', JSON.stringify({ ...state.cart, cartItems }));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
     case 'CART_REMOVE_ITEM': {
       const cartItems = state.cart.cartItems.filter(
         (item) => item.slug !== action.payload.slug
       );
+      Cookies.set('cart', JSON.stringify({ ...state.cart, cartItems }));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
     default:

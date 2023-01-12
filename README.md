@@ -36,3 +36,7 @@ Description
 
 - add select box for quantity
 - handle select box change
+
+11. Save Cart Items
+1. install js-cookie package
+1. save & retreive cart items in cookies
