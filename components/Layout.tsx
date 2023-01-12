@@ -10,7 +10,7 @@ type Props = {
 
 function Layout({ title, children }: Props) {
   const { state } = useContext(Store);
-  let cart = state ? state.cart : state;
+  const { cart } = state!;
   return (
     <>
       <Head>
@@ -29,9 +29,9 @@ function Layout({ title, children }: Props) {
             <div>
               <Link href="/cart" className="p-2">
                 Panier
-                {cart!.cartItems.length > 0 && (
+                {cart.cartItems.length > 0 && (
                   <span className="ml-1 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
-                    {cart!.cartItems.reduce(
+                    {cart.cartItems.reduce(
                       (a: number, c: ProductQuantity) => a + c.quantity,
                       0
                     )}

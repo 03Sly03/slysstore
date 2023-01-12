@@ -8,6 +8,7 @@ import { Store } from '../../utils/Store';
 
 function ProductScreen() {
   const { state, dispatch } = useContext(Store);
+  const router = useRouter();
   const { query } = useRouter();
   const { slug } = query;
   const product = data.products.find((x) => x.slug === slug);
@@ -22,12 +23,12 @@ function ProductScreen() {
       alert("Désolé. Il n'y a plus de stock");
       return;
     }
-    if (dispatch) {
-      dispatch({
-        type: 'CART_ADD_ITEM',
-        payload: { ...product, quantity },
-      });
-    }
+
+    dispatch!({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity },
+    });
+    router.push('/cart/');
   };
 
   return (
