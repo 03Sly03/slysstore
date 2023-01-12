@@ -1,4 +1,4 @@
-export type ProductData = {
+export interface ProductData {
   name: string;
   slug: string;
   category: string;
@@ -9,4 +9,4 @@ export type ProductData = {
   numReviews: number;
   countInStock: number;
   description: string;
-};
+}
