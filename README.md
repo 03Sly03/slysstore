@@ -33,10 +33,12 @@ Description
    3. list items in cart items
    4. redirect to cart screen after add to cart
 10. Handle Changing Cart Items
-
-- add select box for quantity
-- handle select box change
-
-11. Save Cart Items
-1. install js-cookie package
-1. save & retreive cart items in cookies
+11. add select box for quantity
+12. handle select box change
+13. Save Cart Items
+14. install js-cookie package
+15. save & retreive cart items in cookies
+16. Create Login Form
+17. install react hook form
+18. craete input boxes
+19. add login button
