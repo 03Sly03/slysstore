@@ -3,12 +3,14 @@ import bcrypt from 'bcryptjs';
 const data = {
   users: [
     {
+      id: '987654',
       name: 'John',
       email: 'admin@example.com',
       password: bcrypt.hashSync('123456'),
       isAdmin: true,
     },
     {
+      id: '456789',
       name: 'Danna',
       email: 'user@example.com',
       password: bcrypt.hashSync('123456'),
@@ -17,6 +19,7 @@ const data = {
   ],
   products: [
     {
+      id: '1234',
       name: 'Chemise Détente',
       slug: 'free-shirt',
       category: 'Shirts',
@@ -29,6 +32,7 @@ const data = {
       description: 'A popular shirt',
     },
     {
+      id: '2345',
       name: 'Chemise ajustée',
       slug: 'fit-shirt',
       category: 'Shirts',
@@ -41,6 +45,7 @@ const data = {
       description: 'A popular shirt',
     },
     {
+      id: '3456',
       name: 'Chemise Slim',
       slug: 'slim-shirt',
       category: 'Shirts',
@@ -53,6 +58,7 @@ const data = {
       description: 'A popular shirt',
     },
     {
+      id: '4567',
       name: 'Pantalon de golf',
       slug: 'golf-pants',
       category: 'Pants',
@@ -65,6 +71,7 @@ const data = {
       description: 'Smart looking pants',
     },
     {
+      id: '5678',
       name: 'Pantalon ajusté',
       slug: 'fit-pants',
       category: 'Pants',
@@ -77,6 +84,7 @@ const data = {
       description: 'A popular pants',
     },
     {
+      id: '6789',
       name: 'Pantalon classic',
       slug: 'classic-pants',
       category: 'Pants',
