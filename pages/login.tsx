@@ -95,7 +95,9 @@ function LoginScreen() {
       </form>
       <div className="mb-4">
         Vous n'avez pas de compte chez nous ?&nbsp;
-        <Link href="register">S'enregistrer</Link>
+        <Link className="text-blue-600 hover:text-blue-800" href="register">
+          S'enregistrer
+        </Link>
       </div>
     </Layout>
   );

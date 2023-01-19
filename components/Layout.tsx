@@ -3,8 +3,11 @@ import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 import { ProductQuantity, Store } from '../utils/Store';
 import { ToastContainer } from 'react-toastify';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import 'react-toastify/dist/ReactToastify.css';
+import { Menu } from '@headlessui/react';
+import DropdownLink from './DropdownLink';
+import Cookies from 'js-cookie';
 
 type Props = {
   title: string;
@@ -14,7 +17,7 @@ type Props = {
 function Layout({ title, children }: Props) {
   const { status, data: session } = useSession();
 
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const { cart } = state!;
   const [cartItemsCount, setCartItemsCount] = useState(0);
   useEffect(() => {
@@ -25,6 +28,11 @@ function Layout({ title, children }: Props) {
       )
     );
   }, [cart.cartItems]);
+  const logoutClickHandler = () => {
+    Cookies.remove('cart');
+    if (dispatch) dispatch({ type: 'CART_RESET', payload: cart.cartItems[0] });
+    signOut({ callbackUrl: '/login' });
+  };
   return (
     <>
       <Head>
@@ -43,7 +51,10 @@ function Layout({ title, children }: Props) {
               Sly's Store
             </Link>
             <div>
-              <Link href="/cart" className="p-2">
+              <Link
+                href="/cart"
+                className="p-2 text-blue-600 hover:text-blue-800"
+              >
                 Panier
                 {cartItemsCount > 0 && (
                   <span className="ml-1 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
@@ -54,9 +65,31 @@ function Layout({ title, children }: Props) {
               {status === 'loading' ? (
                 'Loading'
               ) : session?.user ? (
-                session.user.name
+                <Menu as="div" className="relative inline-block">
+                  <Menu.Button className="text-blue-500">
+                    {session.user.name}
+                  </Menu.Button>
+                  <Menu.Items className="bg-white absolute right-0 w-56 origin-top-right shadow-lg">
+                    <Menu.Item>
+                      <DropdownLink href="/profile">Profile</DropdownLink>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <DropdownLink href="/profile">
+                        Historique des commandes
+                      </DropdownLink>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link href="#" onClick={logoutClickHandler}>
+                        Se déconnecter
+                      </Link>
+                    </Menu.Item>
+                  </Menu.Items>
+                </Menu>
               ) : (
-                <Link className="p-2" href="/login">
+                <Link
+                  className="p-2 text-blue-600 hover:text-blue-800"
+                  href="/login"
+                >
                   Se connecter
                 </Link>
               )}
