@@ -19,7 +19,13 @@ export interface AppContextInterface {
 }
 
 export interface ProductQuantity extends ProductData {
-  quantity: number;
+  quantity?: number;
+  fullName?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  country?: string;
+  location?: object;
 }
 
 interface ACTIONTYPE {
@@ -57,7 +63,7 @@ const initialState: AppContextInterface = {
 
 // avec les cookies
 const initialState: AppContextInterface = {
-  cart: cookies ? JSON.parse(cookies) : { cartItems: [] },
+  cart: cookies ? JSON.parse(cookies) : { cartItems: [], shippingAddress: {} },
 };
 
 function reducer(state: typeof initialState, action: ACTIONTYPE) {
