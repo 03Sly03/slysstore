@@ -15,6 +15,7 @@ const cookies = Cookies.get('cart');
 export interface AppContextInterface {
   cart: {
     cartItems: ProductQuantity[];
+    shippingAddress: {};
   };
 }
 
@@ -95,6 +96,25 @@ function reducer(state: typeof initialState, action: ACTIONTYPE) {
           cartItems: [],
           shippingAddress: { location: {} },
           paymentMethod: '',
+        },
+      };
+    case 'SAVE_SHIPPING_ADDRESS':
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          shippingAddress: {
+            ...state.cart.shippingAddress,
+            ...action.payload,
+          },
+        },
+      };
+    case 'SAVE_PAYMENT_METHOD':
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          paymentMethod: action.payload,
         },
       };
     default:
