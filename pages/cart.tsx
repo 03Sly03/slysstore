@@ -6,6 +6,8 @@ import { ProductQuantity, Store } from '../utils/Store';
 import { XCircleIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function CartScreen() {
   const { state, dispatch } = useContext(Store);
@@ -17,9 +19,14 @@ function CartScreen() {
   const removeItemHandler = (item: ProductQuantity) => {
     dispatch!({ type: 'CART_REMOVE_ITEM', payload: item });
   };
-  const updateCartHandler = (item: ProductQuantity, qty: string) => {
+  const updateCartHandler = async (item: ProductQuantity, qty: string) => {
     const quantity = Number(qty);
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock < quantity) {
+      return toast.error('Le produit est en rupture de stock');
+    }
     dispatch!({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+    toast.success('Le produit a bien été mis à jour dans le panier');
   };
   return (
     <Layout title="Panier">
@@ -52,8 +59,8 @@ function CartScreen() {
                         className="flex items-center"
                       >
                         <Image
-                          src={item.image}
-                          alt={item.name}
+                          src={item.image!}
+                          alt={item.name!}
                           width={50}
                           height={50}
                         ></Image>
@@ -94,8 +101,9 @@ function CartScreen() {
             <ul>
               <li>
                 <div className="pb-3 text-base font-bold">
-                  Sous-total ( {cartItems.reduce((a, c) => a + c.quantity, 0)} )
-                  : {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)} €
+                  Sous-total ( {cartItems.reduce((a, c) => a + c.quantity!, 0)}{' '}
+                  ) ={' '}
+                  {cartItems.reduce((a, c) => a + c.quantity! * c.price!, 0)} €
                 </div>
               </li>
               <li>

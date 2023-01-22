@@ -3,6 +3,7 @@ import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
+import { toast } from 'react-toastify';
 import Layout from '../../components/Layout';
 import Product from '../../models/Product';
 import { ProductData } from '../../src/types/datas';
@@ -20,8 +21,7 @@ function ProductScreen(props: { product: ProductData }) {
     const { data } = await axios.get(`/api/products/${product._id}`);
 
     if (data.countInStock < quantity) {
-      alert("Désolé. Il n'y a plus de stock");
-      return;
+      return toast.error('Le produit est en rupture de stock');
     }
 
     dispatch!({

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useContext } from 'react';
+import { toast } from 'react-toastify';
 import Layout from '../components/Layout';
 import ProductItem from '../components/ProductItem';
 import Product from '../models/Product';
@@ -18,14 +19,14 @@ export default function Home({ products }: { products: ProductData[] }) {
     const { data } = await axios.get(`/api/products/${product._id}`);
 
     if (data.countInStock < quantity) {
-      alert("Désolé. Il n'y a plus de stock");
-      return;
+      return toast.error('Le produit est en rupture de stock');
     }
 
     dispatch!({
       type: 'CART_ADD_ITEM',
       payload: { ...product, quantity },
     });
+    toast.success('Le produit a été ajouté au panier');
   };
 
   return (
