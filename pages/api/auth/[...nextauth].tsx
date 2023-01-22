@@ -4,7 +4,9 @@ import db from '../../../utils/db';
 import bcryptjs from 'bcryptjs';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-type ExtendedUserType = (typeof User & { isAdmin?: string }) | undefined;
+type ExtendedUserType =
+  | (typeof User & { isAdmin?: boolean; _id: Object })
+  | undefined;
 
 export default NextAuth({
   session: {
@@ -12,14 +14,14 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log('le user bidule turcmushe: ', user);
-      if (user?.id) token.id = user.id;
+      if ((user as ExtendedUserType)?._id)
+        token._id = (user as ExtendedUserType)?._id;
       if ((user as ExtendedUserType)?.isAdmin)
         token.isAdmin = (user as ExtendedUserType)?.isAdmin;
       return token;
     },
     async session({ session, token }) {
-      if (token?.id) session.user.id = token.id;
+      if (token?._id) session.user._id = token._id;
       if (token?.isAdmin) session.user.isAdmin = token.isAdmin;
       return session;
     },
@@ -41,7 +43,7 @@ export default NextAuth({
           bcryptjs.compareSync(credentials!.password, user.password)
         ) {
           return {
-            id: user.id,
+            id: user._id,
             name: user.name,
             email: user.email,
             image: 'f',

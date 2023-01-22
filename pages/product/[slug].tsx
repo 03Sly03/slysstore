@@ -1,25 +1,25 @@
+import axios from 'axios';
 import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import Layout from '../../components/Layout';
-import data from '../../utils/data';
+import Product from '../../models/Product';
+import { ProductData } from '../../src/types/datas';
+import db from '../../utils/db';
 import { Store } from '../../utils/Store';
 
-function ProductScreen() {
+function ProductScreen(props: { product: ProductData }) {
+  const { product } = props;
   const { state, dispatch } = useContext(Store);
   const router = useRouter();
-  const { query } = useRouter();
-  const { slug } = query;
-  const product = data.products.find((x) => x.slug === slug);
-  if (!product) {
-    return <div>Produit non trouvé</div>;
-  }
 
-  const addToCartHandler = () => {
+  const addToCartHandler = async () => {
     const exisItem = state?.cart.cartItems.find((x) => x.slug === product.slug);
-    const quantity = exisItem ? exisItem.quantity + 1 : 1;
-    if (product.countInStock < quantity) {
+    const quantity = exisItem ? exisItem.quantity! + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+
+    if (data.countInStock < quantity) {
       alert("Désolé. Il n'y a plus de stock");
       return;
     }
@@ -31,15 +31,22 @@ function ProductScreen() {
     router.push('/cart/');
   };
 
+  if (!product) {
+    return (
+      <Layout title="Produit on trouvé">
+        <>Produit non trouvé</>
+      </Layout>
+    );
+  }
   return (
-    <Layout title={product.name}>
+    <Layout title={product.name!}>
       <div className="py-2">
         <Link href="/">Retour</Link>
       </div>
       <div className="grid md:grid-cols-4 md:gap-3">
         <div className="md:col-span-2">
           <Image
-            src={product.image}
+            src={product.image!}
             alt={product.name}
             width={640}
             height={640}
@@ -68,7 +75,7 @@ function ProductScreen() {
             <div className="mb-2 flex justify-between">
               <div>Status</div>
               <div>
-                {product.countInStock > 0 ? 'En stock' : 'Non disponible'}
+                {product.countInStock! > 0 ? 'En stock' : 'Non disponible'}
               </div>
             </div>
             <button
@@ -85,3 +92,16 @@ function ProductScreen() {
 }
 
 export default ProductScreen;
+
+export async function getServerSideProps(context: { params: ProductData }) {
+  const { params } = context;
+  const { slug } = params;
+  await db.connect();
+  const product = await Product.findOne({ slug }).lean();
+  await db.disconnect();
+  return {
+    props: {
+      product: product ? db.convertDocToObj(product) : null,
+    },
+  };
+}

@@ -1,5 +1,11 @@
 # Nextjs Tailwind ECommerce Website
 
+## Installation dev environement
+
+git clone <the repository>
+npm install
+npm run dev
+
 Description
 
 ## Lessons
@@ -66,3 +72,7 @@ Description
     instert sample products to mongodb
     load products form db in home and product screen
     check product count in stock and add to cart
+19. Load Products MongoDB
+    load products in home page from mongodb
+    load products in product page from mongodb
+    use product api to check count in stock in add to cart

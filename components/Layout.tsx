@@ -23,7 +23,7 @@ function Layout({ title, children }: Props) {
   useEffect(() => {
     setCartItemsCount(
       cart.cartItems.reduce(
-        (a: number, c: ProductQuantity) => a + c.quantity,
+        (a: number, c: ProductQuantity) => a + c.quantity!,
         0
       )
     );

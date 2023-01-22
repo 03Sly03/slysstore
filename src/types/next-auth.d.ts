@@ -6,11 +6,11 @@ declare module 'next-auth' {
    */
   export interface Session {
     user: {
-      id: string | unknown;
+      _id: object;
       name: string;
       email: string;
       password: string;
-      isAdmin: true | unknown;
+      isAdmin: boolean | unknown;
     } & DefaultSession['user'];
   }
 }
