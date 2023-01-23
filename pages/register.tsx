@@ -6,10 +6,13 @@ import { signIn, useSession } from 'next-auth/react';
 import { getError } from '../utils/error';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 type FormValues = {
+  name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
 function LoginScreen() {
@@ -27,16 +30,24 @@ function LoginScreen() {
   const {
     handleSubmit,
     register,
+    getValues,
     formState: { errors },
   } = useForm<FormValues>();
   const submitHandler: SubmitHandler<FormValues> = async ({
+    name,
     email,
     password,
   }) => {
     // console.log(email, password);
     try {
+      await axios.post('/api/auth/signup', {
+        name,
+        email,
+        password,
+      });
       const result = await signIn('credentials', {
         redirect: false,
+        name,
         email,
         password,
       });
@@ -48,12 +59,29 @@ function LoginScreen() {
     }
   };
   return (
-    <Layout title="connexion">
+    <Layout title="Créer un compte">
       <form
         className="mx-auto max-w-screen-md"
         onSubmit={handleSubmit(submitHandler)}
       >
-        <h1 className="mb-4 text-xl">Connexion</h1>
+        <h1 className="mb-4 text-xl">Créer un compte</h1>
+
+        <div className="mb-4">
+          <label htmlFor="name">Nom</label>
+          <input
+            {...register('name', {
+              required: 'Entrez votre nom',
+            })}
+            type="text"
+            id="name"
+            className="w-full"
+            autoFocus
+          />
+          {errors.name && (
+            <div className="text-red-500">{errors.name.message}</div>
+          )}
+        </div>
+
         <div className="mb-4">
           <label htmlFor="email">Adresse mail</label>
           <input
@@ -67,7 +95,6 @@ function LoginScreen() {
             type="email"
             id="email"
             className="w-full"
-            autoFocus
           />
           {errors.email && (
             <div className="text-red-500">{errors.email.message}</div>
@@ -88,16 +115,40 @@ function LoginScreen() {
             <div className="text-red-500">{errors.password.message}</div>
           )}
         </div>
+
         <div className="mb-4">
-          <button className="primary-button">Se connecter</button>
+          <label htmlFor="confirmPassword">Confirmez le mot de passe</label>
+          <input
+            {...register('confirmPassword', {
+              required: 'Veuillez confirmer le mot de passe',
+              validate: (value) => value === getValues('password'),
+              minLength: { value: 6, message: 'Mot de passe trop court' },
+            })}
+            type="password"
+            id="confirmPassword"
+            className="w-full"
+          />
+          {errors.confirmPassword && (
+            <div className="text-red-500">{errors.confirmPassword.message}</div>
+          )}
+          {errors.confirmPassword &&
+            errors.confirmPassword.type === 'validate' && (
+              <div className="text-red-500">
+                Le mot de passe ne correspond pas
+              </div>
+            )}
+        </div>
+
+        <div className="mb-4">
+          <button className="primary-button">S'enregistrer</button>
         </div>
         <div className="mb-4">
-          Vous n'avez pas de compte chez nous ? &nbsp;
+          Vous avez déjà un compte chez nous ?&nbsp;
           <Link
             className="text-blue-600 hover:text-blue-800"
-            href={`/register?redirect=${redirect || '/'}`}
+            href={`/login?redirect=${redirect || '/'}`}
           >
-            S'enregistrer
+            Se connecter
           </Link>
         </div>
       </form>
