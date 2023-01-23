@@ -81,3 +81,7 @@ Description
     display payment method
     display order items
     implement create order
+21. Create Order Screen
+    implement backend api for order details
+    load order data from backend
+    display order details
