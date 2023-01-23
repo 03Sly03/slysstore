@@ -65,26 +65,38 @@ function Layout({ title, children }: Props) {
               {status === 'loading' ? (
                 'Loading'
               ) : session?.user ? (
-                <Menu as="div" className="relative inline-block">
-                  <Menu.Button className="text-blue-500">
-                    {session.user.name}
-                  </Menu.Button>
-                  <Menu.Items className="bg-white absolute right-0 w-56 origin-top-right shadow-lg">
-                    <Menu.Item>
-                      <DropdownLink href="/profile">Profile</DropdownLink>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <DropdownLink href="/profile">
-                        Historique des commandes
-                      </DropdownLink>
-                    </Menu.Item>
-                    <Menu.Item>
-                      <Link href="#" onClick={logoutClickHandler}>
-                        Se déconnecter
-                      </Link>
-                    </Menu.Item>
-                  </Menu.Items>
-                </Menu>
+                <div className="relative inline-block">
+                  <Menu as="div">
+                    <Menu.Button className="text-blue-500">
+                      {session.user.name}
+                    </Menu.Button>
+                    <Menu.Items className="bg-white absolute right-0 w-56 origin-top-right shadow-lg">
+                      <Menu.Item>
+                        <div>
+                          <DropdownLink href="#">Profile</DropdownLink>
+                        </div>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <div>
+                          <DropdownLink href="#">
+                            Historique des commandes
+                          </DropdownLink>
+                        </div>
+                      </Menu.Item>
+                      <Menu.Item>
+                        <div>
+                          <Link
+                            className="dropdown-link"
+                            href="#"
+                            onClick={logoutClickHandler}
+                          >
+                            Se déconnecter
+                          </Link>
+                        </div>
+                      </Menu.Item>
+                    </Menu.Items>
+                  </Menu>
+                </div>
               ) : (
                 <Link
                   className="p-2 text-blue-600 hover:text-blue-800"
