@@ -97,8 +97,8 @@ function CartScreen() {
               </tbody>
             </table>
           </div>
-          <div className="card p-5">
-            <ul>
+          <div className="md:w-60">
+            <ul className="card p-5">
               <li>
                 <div className="pb-3 text-base font-bold">
                   Sous-total ( {cartItems.reduce((a, c) => a + c.quantity!, 0)}{' '}

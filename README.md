@@ -76,3 +76,8 @@ Description
     load products in home page from mongodb
     load products in product page from mongodb
     use product api to check count in stock in add to cart
+20. Create Place Order Screen
+    display shipping address
+    display payment method
+    display order items
+    implement create order

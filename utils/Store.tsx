@@ -1,4 +1,10 @@
-import { createContext, Dispatch, PropsWithChildren, useReducer } from 'react';
+import {
+  createContext,
+  Dispatch,
+  PropsWithChildren,
+  Reducer,
+  useReducer,
+} from 'react';
 import { ProductData } from '../src/types/datas';
 import Cookies from 'js-cookie';
 
@@ -12,10 +18,20 @@ export interface AppContextInterface {
 
 const cookies = Cookies.get('cart');
 
+export interface ShippingAddressType {
+  fullName: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  location: object;
+}
+
 export interface AppContextInterface {
   cart: {
     cartItems: ProductQuantity[];
-    shippingAddress: {};
+    shippingAddress: ShippingAddressType;
+    paymentMethod: string;
   };
 }
 
@@ -27,6 +43,7 @@ export interface ProductQuantity extends ProductData {
   postalCode?: string;
   country?: string;
   location?: object;
+  paymentMethod?: string;
 }
 
 interface ACTIONTYPE {
@@ -67,7 +84,7 @@ const initialState: AppContextInterface = {
   cart: cookies ? JSON.parse(cookies) : { cartItems: [], shippingAddress: {} },
 };
 
-function reducer(state: typeof initialState, action: ACTIONTYPE) {
+const reducer: Reducer<AppContextInterface, ACTIONTYPE> = (state, action) => {
   switch (action.type) {
     case 'CART_ADD_ITEM': {
       const newItem = action.payload;
@@ -94,10 +111,19 @@ function reducer(state: typeof initialState, action: ACTIONTYPE) {
         ...state,
         cart: {
           cartItems: [],
-          shippingAddress: { location: {} },
+          shippingAddress: {
+            fullName: '',
+            address: '',
+            city: '',
+            postalCode: '',
+            country: '',
+            location: {},
+          },
           paymentMethod: '',
         },
       };
+    case 'CART_CLEAR_ITEMS':
+      return { ...Cookies, cart: { ...state.cart, cartItems: [] } };
     case 'SAVE_SHIPPING_ADDRESS':
       return {
         ...state,
@@ -114,10 +140,10 @@ function reducer(state: typeof initialState, action: ACTIONTYPE) {
         ...state,
         cart: {
           ...state.cart,
-          paymentMethod: action.payload,
+          ...action.payload,
         },
       };
     default:
       return state;
   }
-}
+};

@@ -7,18 +7,22 @@ import Layout from '../components/Layout';
 import { Store } from '../utils/Store';
 
 function PaymentScreen() {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState<string>('');
   const { state, dispatch } = useContext(Store);
-  const { cart } = state;
+  const { cart } = state!;
   const { shippingAddress, paymentMethod } = cart;
   const router = useRouter();
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (!selectedPaymentMethod) {
       return toast.error('Sélectionnez une méthode de paiement');
     }
-    dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: selectedPaymentMethod });
+    dispatch!({
+      type: 'SAVE_PAYMENT_METHOD',
+      payload: { paymentMethod: selectedPaymentMethod },
+    });
     Cookies.set(
       'cart',
       JSON.stringify({
@@ -30,9 +34,11 @@ function PaymentScreen() {
   };
 
   useEffect(() => {
-    if (!shippingAddress.address) {
-      return router.push('/shipping');
-    }
+    (async () => {
+      if (!shippingAddress.address) {
+        return router.push('/shipping');
+      }
+    })();
     setSelectedPaymentMethod(paymentMethod || '');
   }, [paymentMethod, router, shippingAddress.address]);
 
@@ -64,7 +70,7 @@ function PaymentScreen() {
           >
             Précédent
           </button>
-          <button type="sunmit" className="primary-button">
+          <button type="submit" className="primary-button">
             Suivant
           </button>
         </div>

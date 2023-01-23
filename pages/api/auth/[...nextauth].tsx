@@ -9,8 +9,10 @@ type ExtendedUserType =
   | undefined;
 
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
