@@ -2,7 +2,7 @@ import bcryptjs from 'bcryptjs';
 import User from '../../../models/User';
 import db from '../../../utils/db';
 
-async function handler(req: any, res: any) {
+async function Handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return;
   }
@@ -44,4 +44,4 @@ async function handler(req: any, res: any) {
   });
 }
 
-export default handler;
+export default Handler;

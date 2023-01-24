@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react';
 import Order from '../../../models/Orders';
 import db from '../../../utils/db';
 
-const handler: NextApiHandler = async (req, res) => {
+const Handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
   if (!session) {
     return res.status(401).send('signin required');
@@ -19,4 +19,4 @@ const handler: NextApiHandler = async (req, res) => {
   res.status(201).send(order);
 };
 
-export default handler;
+export default Handler;

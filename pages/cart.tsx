@@ -35,7 +35,9 @@ function CartScreen() {
         <div>
           La liste d'articles est vide.{' '}
           <Link href="/">
-            <span style={{ fontWeight: 'bolder' }}>Continuer mes achats</span>
+            <span className="text-blue-500 font-semibold">
+              Continuer mes achats
+            </span>
           </Link>
         </div>
       ) : (

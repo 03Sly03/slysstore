@@ -4,7 +4,7 @@ import data from '../../utils/data';
 import { NextApiHandler } from 'next';
 import Product from '../../models/Product';
 
-const handler: NextApiHandler = async (req, res) => {
+const Handler: NextApiHandler = async (req, res) => {
   await db.connect();
   await User.deleteMany();
   await User.insertMany(data.users);
@@ -14,4 +14,4 @@ const handler: NextApiHandler = async (req, res) => {
   res.send({ message: 'seeded successfully' });
 };
 
-export default handler;
+export default Handler;

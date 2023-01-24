@@ -15,7 +15,7 @@ type FormValues = {
   confirmPassword: string;
 };
 
-function LoginScreen() {
+function RegisterScreen() {
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -156,4 +156,4 @@ function LoginScreen() {
   );
 }
 
-export default LoginScreen;
+export default RegisterScreen;
