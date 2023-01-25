@@ -4,6 +4,7 @@ import { StoreProvider } from '../utils/Store';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { NextComponentType } from 'next';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 type CustomAppProps = AppProps & {
   Component: NextComponentType & { auth?: boolean };
@@ -13,16 +14,26 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: CustomAppProps) {
+  const SCRIPT_PROVIDER_OPTIONS = {
+    'client-id': process.env.PAYPAL_CLIENT_ID || 'sb',
+  };
+
   return (
     <SessionProvider session={session}>
       <StoreProvider>
-        {Component.auth ? (
-          <Auth>
+        <PayPalScriptProvider
+          deferLoading={true}
+          // options={{ 'client-id': 'sb' }}
+          options={SCRIPT_PROVIDER_OPTIONS}
+        >
+          {Component.auth ? (
+            <Auth>
+              <Component {...pageProps} />
+            </Auth>
+          ) : (
             <Component {...pageProps} />
-          </Auth>
-        ) : (
-          <Component {...pageProps} />
-        )}
+          )}
+        </PayPalScriptProvider>
       </StoreProvider>
     </SessionProvider>
   );

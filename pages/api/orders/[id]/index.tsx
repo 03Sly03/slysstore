@@ -1,7 +1,7 @@
 import { NextApiHandler } from 'next';
 import { getSession } from 'next-auth/react';
-import Order from '../../../models/Orders';
-import db from '../../../utils/db';
+import Order from '../../../../models/Orders';
+import db from '../../../../utils/db';
 
 const Handler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
