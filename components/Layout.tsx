@@ -78,7 +78,7 @@ function Layout({ title, children }: Props) {
                       </Menu.Item>
                       <Menu.Item>
                         <div>
-                          <DropdownLink href="#">
+                          <DropdownLink href="order-history">
                             Historique des commandes
                           </DropdownLink>
                         </div>
