@@ -73,12 +73,12 @@ function Layout({ title, children }: Props) {
                     <Menu.Items className="bg-white absolute right-0 w-56 origin-top-right shadow-lg">
                       <Menu.Item>
                         <div>
-                          <DropdownLink href="#">Profile</DropdownLink>
+                          <DropdownLink href="/profile">Profile</DropdownLink>
                         </div>
                       </Menu.Item>
                       <Menu.Item>
                         <div>
-                          <DropdownLink href="order-history">
+                          <DropdownLink href="/order-history">
                             Historique des commandes
                           </DropdownLink>
                         </div>

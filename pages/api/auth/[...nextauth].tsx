@@ -5,7 +5,7 @@ import bcryptjs from 'bcryptjs';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 type ExtendedUserType =
-  | (typeof User & { isAdmin?: boolean; _id: Object })
+  | (typeof User & { isAdmin: boolean; _id: string })
   | undefined;
 
 export default NextAuth({
@@ -23,8 +23,8 @@ export default NextAuth({
       return token;
     },
     async session({ session, token }) {
-      if (token?._id) session.user._id = token._id;
-      if (token?.isAdmin) session.user.isAdmin = token.isAdmin;
+      if (token._id) session.user._id = token._id;
+      if (token.isAdmin) session.user.isAdmin = token.isAdmin;
       return session;
     },
   },
@@ -46,6 +46,7 @@ export default NextAuth({
         ) {
           return {
             id: user._id,
+            _id: user._id,
             name: user.name,
             email: user.email,
             image: 'f',

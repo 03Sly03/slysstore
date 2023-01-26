@@ -98,3 +98,7 @@ Description
     create my order api
     create order history component
     fetch orders and display them
+25. Update User Profile
+    create profile screen
+    show user info
+    handle update user info
